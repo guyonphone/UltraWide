@@ -48,8 +48,6 @@ I have tried to keep Steam's native functionality intact wherever possible rathe
 
 UltraWide has also been built with the Millennium community guidelines in mind. The theme uses local CSS and JavaScript, does not collect user data, and does not load third-party scripts or styles.
 
-The theme should also remain compatible with Steam's default color changer, since the design is intended to work with Steam rather than override its entire visual identity.
-
 ## What is not redesigned yet
 
 UltraWide is currently focused on the main Store experience.
