@@ -99,3 +99,20 @@ UltraWide/
 ├── LICENSE
 └── assets/
     └── screenshots/
+```
+## Troubleshooting
+
+### Black Store page on first load
+
+On the first load after enabling UltraWide, you may occasionally see the Steam Store appear as a completely black page.
+
+If this happens, you can usually resolve it by:
+
+- switching to your **Library** and then back to the **Store**, or
+- simply waiting a few seconds for the Store to finish loading.
+
+This does not happen consistently, and in testing it has mostly appeared on the first load after enabling the theme or restarting Steam.
+
+Once the Store has loaded successfully, consecutive page loads generally behave normally.
+
+I am continuing to keep an eye on this behavior and may refine the startup handling in future versions.
