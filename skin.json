@@ -3,6 +3,15 @@
   "author": "guyonphone",
   "description": "An ultrawide-focused Steam Store redesign with a three-lane homepage, expanded app pages, deterministic purchase placement, a React-safe in-page customer review browser with pinned controls, mouse gutters, natural page scroll chaining, paint-safe toggleable review graphs, strict app/home runtime isolation, and early cold-start loading feedback.",
   "version": "81.0.0",
+
+  "header_image": "https://raw.githubusercontent.com/guyonphone/UltraWide/main/assets/screenshots/homepage.png",
+  "splash_image": "https://raw.githubusercontent.com/guyonphone/UltraWide/main/assets/screenshots/app-page.png",
+
+  "github": {
+    "owner": "guyonphone",
+    "repo_name": "UltraWide"
+  },
+
   "Patches": [
     {
       "MatchRegexString": "^https://store\\.steampowered\\.com/app/[0-9]+(?:[/?].*)?$",
@@ -14,9 +23,5 @@
       "TargetCss": "home.css",
       "TargetJs": "home.js"
     }
-  ],
-  "github": {
-    "owner": "guyonphone",
-    "repo_name": "UltraWide"
-  }
+  ]
 }
