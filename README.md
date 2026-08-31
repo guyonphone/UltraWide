@@ -1,6 +1,6 @@
 # UltraWide
 
-Got a 4K or ultrawide monitor? Tired of Steam using the middle third of it like the rest of your screen doesn’t exist? Me too.
+Got a 4K or ultrawide monitor? Tired of Steam looking like it was made for a phone? Me too.
 
 **UltraWide for Steam** makes the Store actually fit your display, with a three-column homepage, expanded game pages, better purchase placement, and a redesigned review section built for big screens.
 
