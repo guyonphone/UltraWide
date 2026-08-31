@@ -83,6 +83,7 @@ The default Windows path is:
 
 ```text
 C:\Program Files (x86)\Steam\millennium\themes\UltraWide
+```
 
 ## Repository layout
 
