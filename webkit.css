@@ -1,0 +1,1313 @@
+/* =====================================================================
+   ULTRAWIDE — INDIVIDUAL STEAM APP PAGES
+   =====================================================================
+
+   Scope: store.steampowered.com/app/... only (see skin.json).
+
+   Sections below are intentionally scoped under html.uw9-active so rules do
+   not leak into unrelated Steam browser views. !important is used only where
+   needed to defeat Steam's existing/inline sizing rules.
+
+   =====================================================================
+
+   TOP
+   -----------------------------------------------------------------------
+   LEFT INFO            CENTER MEDIA                 RIGHT ACTIONS
+   title/summary        trailers/screenshots         purchase/DLC/events
+
+   BELOW
+   -----------------------------------------------------------------------
+   Long-form game content continues under the three independent lanes.
+   Customer Reviews then receives its own full-width scrollable viewport.
+
+   ===================================================================== */
+
+html.uw9-active {
+    --uw9-gap: 24px;
+    --uw9-media: 1800px;
+    --uw9-mid: 760px;
+    --uw9-aux: 700px;
+    --uw9-total: 3308px;
+    --uw9-lower-gap: 30px;
+}
+
+/* Containers vacated by moved nodes should not retain Steam's old height. */
+html.uw9-active .uw9-vacated {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* ================================================================
+   TOP: 3-COLUMN HERO
+   ================================================================ */
+
+html.uw9-active #game_highlights.uw9-shell {
+    width: var(--uw9-total) !important;
+    max-width: calc(100vw - 32px) !important;
+    min-width: 0 !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    margin: 0 auto !important;
+    padding: 0 !important;
+
+    display: grid !important;
+    grid-template-columns:
+        minmax(560px, var(--uw9-mid))
+        minmax(0, var(--uw9-media))
+        minmax(500px, var(--uw9-aux)) !important;
+
+    grid-template-areas: "middle media aux" !important;
+
+    gap: var(--uw9-gap) !important;
+    align-items: start !important;
+
+    overflow: visible !important;
+    box-sizing: border-box !important;
+}
+
+/* ---------------- LEFT: MEDIA ---------------- */
+
+html.uw9-active #game_highlights.uw9-shell > .leftcol {
+    grid-area: media !important;
+
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    float: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+html.uw9-active #game_highlights.uw9-shell .highlight_ctn,
+html.uw9-active #game_highlights.uw9-shell .highlight_overflow {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+
+    height: auto !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+html.uw9-active #game_highlights.uw9-shell .highlight_overflow {
+    margin-inline-end: 0 !important;
+    overflow: hidden !important;
+}
+
+html.uw9-active #game_highlights.uw9-shell #highlight_player_area,
+html.uw9-active #game_highlights.uw9-shell .gamehighlight_desktopskeleton_itemview {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+
+    height: auto !important;
+    aspect-ratio: 600 / 338 !important;
+
+    margin: 0 !important;
+
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+}
+
+html.uw9-active #game_highlights.uw9-shell .highlight_player_item,
+html.uw9-active #game_highlights.uw9-shell .screenshot_holder {
+    width: 100% !important;
+    max-width: none !important;
+
+    height: 100% !important;
+    max-height: none !important;
+}
+
+html.uw9-active #game_highlights.uw9-shell .highlight_player_item video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+}
+
+html.uw9-active #game_highlights.uw9-shell .highlight_player_item img {
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
+}
+
+html.uw9-active #game_highlights.uw9-shell #highlight_strip,
+html.uw9-active #game_highlights.uw9-shell #highlight_strip_scroll {
+    width: 100% !important;
+    max-width: none !important;
+}
+
+/* ---------------- SHARED INFO COLUMN RULES ---------------- */
+
+html.uw9-active .uw9-column {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+
+    gap: 12px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+html.uw9-active #uw9-middle {
+    grid-area: middle !important;
+}
+
+html.uw9-active #uw9-aux {
+    grid-area: aux !important;
+}
+
+html.uw9-active .uw9-column > * {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    float: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+/* ---------------- TITLE / HEADER ---------------- */
+
+html.uw9-active #uw9-middle .page_title_area,
+html.uw9-active #uw9-middle .game_title_area,
+html.uw9-active #uw9-middle .apphub_HomeHeaderContent {
+    width: 100% !important;
+    max-width: none !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+html.uw9-active #uw9-middle .breadcrumbs {
+    width: 100% !important;
+
+    margin: 0 0 5px 0 !important;
+    padding: 0 !important;
+
+    font-size: clamp(11px, 0.21vw, 14px) !important;
+    line-height: 1.25 !important;
+}
+
+html.uw9-active #uw9-middle .apphub_HeaderStandardTop {
+    width: 100% !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    margin: 0 !important;
+    padding: 6px 0 !important;
+
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+
+    gap: 8px !important;
+}
+
+html.uw9-active #uw9-middle .apphub_AppName,
+html.uw9-active #uw9-middle #appHubAppName {
+    float: none !important;
+
+    flex: 1 1 300px !important;
+    min-width: 0 !important;
+
+    margin: 0 !important;
+
+    font-size: clamp(20px, 0.42vw, 32px) !important;
+    line-height: 1.1 !important;
+}
+
+html.uw9-active #uw9-middle .apphub_OtherSiteInfo {
+    float: none !important;
+    margin-left: auto !important;
+}
+
+/* ---------------- EVENT / SALE BANNER ---------------- */
+
+html.uw9-active #uw9-middle .uw9-header-extra {
+    width: 100% !important;
+    max-width: none !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    overflow: hidden !important;
+}
+
+html.uw9-active #uw9-middle .uw9-header-extra img,
+html.uw9-active #uw9-middle .uw9-header-extra picture,
+html.uw9-active #uw9-middle .uw9-header-extra video {
+    display: block !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+
+    object-fit: contain !important;
+}
+
+/* ---------------- GAME SUMMARY ---------------- */
+
+html.uw9-active .uw9-column > .rightcol,
+html.uw9-active .uw9-column .rightcol {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+
+    float: none !important;
+
+    margin: 0 !important;
+
+    overflow: visible !important;
+}
+
+html.uw9-active #uw9-middle .glance_ctn {
+    width: 100% !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    padding: 0 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+
+    gap: 8px !important;
+}
+
+html.uw9-active #uw9-middle .game_header_ctn,
+html.uw9-active #uw9-middle .glance_mid_ctn {
+    width: 100% !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+}
+
+html.uw9-active #uw9-middle .game_header_image_ctn {
+    width: 100% !important;
+    height: auto !important;
+
+    margin: 0 !important;
+}
+
+html.uw9-active #uw9-middle img.game_header_image_full,
+html.uw9-active #uw9-middle img.game_header_image {
+    display: block !important;
+
+    width: 100% !important;
+    max-width: none !important;
+    height: auto !important;
+
+    object-fit: contain !important;
+}
+
+html.uw9-active #uw9-middle .game_description_snippet {
+    font-size: clamp(13px, 0.25vw, 17px) !important;
+    line-height: 1.42 !important;
+
+    padding-right: 0 !important;
+
+    -webkit-line-clamp: 9 !important;
+}
+
+html.uw9-active #uw9-middle .user_reviews,
+html.uw9-active #uw9-middle .user_reviews_summary_row,
+html.uw9-active #uw9-middle .dev_row,
+html.uw9-active #uw9-middle .release_date {
+    font-size: clamp(12px, 0.22vw, 15px) !important;
+    line-height: 1.32 !important;
+}
+
+/* ---------------- TOP MODULE WIDTH FIXES ---------------- */
+
+html.uw9-active .uw9-column .queue_ctn,
+html.uw9-active .uw9-column .queue_overflow_ctn,
+html.uw9-active .uw9-column .early_access_header,
+html.uw9-active .uw9-column #game_area_purchase,
+html.uw9-active .uw9-column .game_area_purchase_game_wrapper,
+html.uw9-active .uw9-column .game_area_purchase_game,
+html.uw9-active .uw9-column .game_page_autocollapse,
+html.uw9-active .uw9-column .game_area_bubble,
+html.uw9-active .uw9-column .responsive_apppage_details_left,
+html.uw9-active .uw9-column .recent_game_events,
+html.uw9-active .uw9-column .game_meta_data,
+html.uw9-active .uw9-column .rightcol.game_meta_data {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+
+    float: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+html.uw9-active .uw9-column .game_area_purchase_game {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+}
+
+html.uw9-active .uw9-column .game_purchase_action {
+    max-width: 100% !important;
+}
+
+html.uw9-active #uw9-aux {
+    gap: 10px !important;
+}
+
+html.uw9-active #uw9-aux img {
+    max-width: 100% !important;
+    height: auto !important;
+}
+
+/* ================================================================
+   LOWER: 2-COLUMN DESKTOP CONTENT
+   ================================================================ */
+
+html.uw9-active #uw9-lower-grid {
+    width: var(--uw9-total) !important;
+    max-width: calc(100vw - 32px) !important;
+    min-width: 0 !important;
+
+    margin: 30px auto 0 auto !important;
+    padding: 0 !important;
+
+    display: grid !important;
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1fr) !important;
+
+    gap: var(--uw9-lower-gap) !important;
+    align-items: start !important;
+
+    box-sizing: border-box !important;
+}
+
+html.uw9-active .uw9-lower-column {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+
+    gap: 24px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+html.uw9-active .uw9-lower-column > * {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    float: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+/* ---------- LEFT LOWER: About / Sysreq / related ---------- */
+
+html.uw9-active #uw9-lower-left .game_description_column,
+html.uw9-active #uw9-lower-left .leftcol.game_description_column {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+
+    float: none !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+html.uw9-active #uw9-lower-left #game_area_description,
+html.uw9-active #uw9-lower-left .game_area_description {
+    width: 100% !important;
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+html.uw9-active #uw9-lower-left #game_area_description img,
+html.uw9-active #uw9-lower-left .game_area_description img {
+    max-width: 100% !important;
+    height: auto !important;
+}
+
+/* Steam's sysreq region can use the full lower-left column. */
+html.uw9-active #uw9-lower-left .sysreq_tabs,
+html.uw9-active #uw9-lower-left .sysreq_contents,
+html.uw9-active #uw9-lower-left .game_area_sys_req,
+html.uw9-active #uw9-lower-left .game_area_sys_req_full {
+    width: 100% !important;
+    max-width: none !important;
+    box-sizing: border-box !important;
+}
+
+/* Keep minimum / recommended side-by-side where Steam provides both. */
+html.uw9-active #uw9-lower-left .game_area_sys_req_left,
+html.uw9-active #uw9-lower-left .game_area_sys_req_right {
+    box-sizing: border-box !important;
+}
+
+/* ---------- RIGHT LOWER: Curators / Reviews ---------- */
+
+html.uw9-active #uw9-lower-right .steam_curators_block,
+html.uw9-active #uw9-lower-right .responsive_apppage_reviewblock,
+html.uw9-active #uw9-lower-right .review_ctn,
+html.uw9-active #uw9-lower-right .review_ctn > .page_content,
+html.uw9-active #uw9-lower-right #app_reviews_hash,
+html.uw9-active #uw9-lower-right .app_reviews_area,
+html.uw9-active #uw9-lower-right .user_reviews_container {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+
+    float: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+/*
+   Valve centers the review area around a narrow page_content width.
+   Kill that cap only inside our review column.
+*/
+html.uw9-active #uw9-lower-right .review_ctn .page_content {
+    width: 100% !important;
+    max-width: none !important;
+}
+
+/* Review summary/filter header should consume the full column. */
+html.uw9-active #uw9-lower-right .user_reviews_header,
+html.uw9-active #uw9-lower-right .review_recent_events,
+html.uw9-active #uw9-lower-right .review_histogram,
+html.uw9-active #uw9-lower-right .review_language_outof,
+html.uw9-active #uw9-lower-right .user_reviews_filter_options {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/*
+   Steam's review cards can retain their own internal avatar/text layout,
+   but the OUTER review boxes should no longer be constrained to the
+   old centered Store width.
+*/
+html.uw9-active #uw9-lower-right .review_box {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Keep dynamic Load More / Browse All controls aligned to the new width. */
+html.uw9-active #uw9-lower-right .load_more_reviews_btn,
+html.uw9-active #uw9-lower-right .view_all_reviews_btn {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Generated group wrappers used when Steam doesn't provide one parent. */
+html.uw9-active .uw9-generated-section {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+
+    display: block !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+/* Keep footer from accidentally inheriting our giant layout. */
+html.uw9-active #footer,
+html.uw9-active .footer_content {
+    max-width: none;
+}
+
+
+/* ================================================================
+   V10: LIVE / STEAM BROADCAST MODULE
+   ================================================================ */
+
+/*
+   Some Store pages place a developer/community broadcast above the
+   normal game page. JavaScript moves the entire broadcast module to
+   the BOTTOM of the middle column.
+*/
+html.uw9-active #uw9-middle .uw10-live-broadcast {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    float: none !important;
+    clear: both !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+}
+
+/* Remove old fixed page widths from common Steam broadcast wrappers. */
+html.uw9-active #uw9-middle .uw10-live-broadcast [class*="broadcast"],
+html.uw9-active #uw9-middle .uw10-live-broadcast [id*="broadcast"],
+html.uw9-active #uw9-middle .uw10-live-broadcast [class*="Broadcast"],
+html.uw9-active #uw9-middle .uw10-live-broadcast [id*="Broadcast"] {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Let the broadcast picture/player fill the middle rail. */
+html.uw9-active #uw9-middle .uw10-live-broadcast video,
+html.uw9-active #uw9-middle .uw10-live-broadcast iframe,
+html.uw9-active #uw9-middle .uw10-live-broadcast canvas {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+}
+
+/*
+   Steam's broadcast player may use an absolutely-sized internal canvas.
+   Preserve a sane 16:9 viewport when a recognizable player wrapper exists.
+*/
+html.uw9-active #uw9-middle .uw10-live-broadcast .broadcast_player,
+html.uw9-active #uw9-middle .uw10-live-broadcast [class*="broadcast_player"],
+html.uw9-active #uw9-middle .uw10-live-broadcast [class*="BroadcastPlayer"] {
+    width: 100% !important;
+    max-width: none !important;
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 16 / 9 !important;
+    box-sizing: border-box !important;
+}
+
+/* Chat/share controls remain beneath the broadcast rather than floating. */
+html.uw9-active #uw9-middle .uw10-live-broadcast button,
+html.uw9-active #uw9-middle .uw10-live-broadcast a {
+    max-width: 100%;
+}
+
+
+/* =====================================================================
+   V11 MASONRY / WATERFALL CONTINUATION
+   =====================================================================
+
+   V9/V10 placed the "lower grid" AFTER the entire three-column hero.
+   That means the lower section could not begin until the tallest hero
+   column ended, leaving a huge blank hole under the video.
+
+   V11 instead places continuation content INSIDE the three independent
+   columns:
+
+      LEFT:
+        trailer
+        thumbnails
+        About This Game
+        system requirements
+        publisher / long-form content
+
+      MIDDLE / RIGHT:
+        their normal top modules
+        curator/review/secondary blocks assigned dynamically
+
+   This removes the artificial horizontal "row boundary".
+   ===================================================================== */
+
+/* The old lower grid becomes unnecessary in masonry mode. */
+html.uw9-active #uw9-lower-grid.uw11-disabled-lower-grid {
+    display: none !important;
+}
+
+/* Continuation wrappers live inside the three top columns. */
+html.uw9-active .uw11-continuation {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+
+    gap: 24px !important;
+
+    margin: 22px 0 0 0 !important;
+    padding: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+/* No extra spacing for the left continuation: it should start right
+   underneath the thumbnail strip. */
+html.uw9-active #uw11-left-continuation {
+    margin-top: 18px !important;
+}
+
+/* Long-form Steam column moved beneath the video. */
+html.uw9-active #uw11-left-continuation .game_description_column,
+html.uw9-active #uw11-left-continuation .leftcol.game_description_column {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+
+    float: none !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+/* About This Game art/text should use the entire media-column width. */
+html.uw9-active #uw11-left-continuation #game_area_description,
+html.uw9-active #uw11-left-continuation .game_area_description {
+    width: 100% !important;
+    max-width: none !important;
+
+    margin: 0 !important;
+    box-sizing: border-box !important;
+}
+
+html.uw9-active #uw11-left-continuation #game_area_description img,
+html.uw9-active #uw11-left-continuation .game_area_description img {
+    display: block !important;
+    max-width: 100% !important;
+    height: auto !important;
+}
+
+/* System requirements can take advantage of the wide left lane. */
+html.uw9-active #uw11-left-continuation .sysreq_tabs,
+html.uw9-active #uw11-left-continuation .sysreq_contents,
+html.uw9-active #uw11-left-continuation .game_area_sys_req,
+html.uw9-active #uw11-left-continuation .game_area_sys_req_full {
+    width: 100% !important;
+    max-width: none !important;
+    box-sizing: border-box !important;
+}
+
+/* Review/curator blocks moved into middle/right continuation. */
+html.uw9-active .uw11-continuation .steam_curators_block,
+html.uw9-active .uw11-continuation .responsive_apppage_reviewblock,
+html.uw9-active .uw11-continuation .review_ctn,
+html.uw9-active .uw11-continuation .review_ctn > .page_content,
+html.uw9-active .uw11-continuation #app_reviews_hash,
+html.uw9-active .uw11-continuation .app_reviews_area,
+html.uw9-active .uw11-continuation .user_reviews_container {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+
+    float: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+html.uw9-active .uw11-continuation .review_ctn .page_content {
+    width: 100% !important;
+    max-width: none !important;
+}
+
+/* Steam's review cards themselves may use fixed inner widths.
+   Keep their internals, but remove outer caps. */
+html.uw9-active .uw11-continuation .review_box,
+html.uw9-active .uw11-continuation .user_reviews_header,
+html.uw9-active .uw11-continuation .review_histogram,
+html.uw9-active .uw11-continuation .user_reviews_filter_options {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Generic moved secondary modules. */
+html.uw9-active .uw11-packed-module {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+
+    float: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+/* Optional visual separation, still using Steam's own surfaces. */
+html.uw9-active .uw11-continuation > * + * {
+    margin-top: 0 !important;
+}
+
+/* The old two-column content grid was the source of the empty band.
+   If Steam/MutationObserver recreates it, force it out of layout. */
+html.uw9-active #uw9-lower-grid {
+    min-height: 0 !important;
+}
+
+
+/* =====================================================================
+   V16 - LIVE BROADCAST AT TOP OF MIDDLE COLUMN
+   ===================================================================== */
+
+/*
+   The live broadcast is now inserted before all other middle-column
+   content. Keep its top edge flush with the column.
+*/
+html.uw9-active #uw9-middle > .uw10-live-broadcast:first-child {
+    margin-top: 0 !important;
+    margin-bottom: 12px !important;
+}
+
+
+/* =====================================================================
+   V17 - SWAP MIDDLE AND PRICE/DLC COLUMNS
+   =====================================================================
+
+   Visual order is now:
+
+      LEFT              CENTER                 RIGHT
+      Media             Price / DLC / metadata Live / game summary / events
+
+   DOM routing is unchanged; only the grid placement is swapped. This keeps
+   all V16 JavaScript behavior intact, including Live pinned to the top of
+   the game's summary lane.
+   ===================================================================== */
+
+
+/* =====================================================================
+   V18 - CENTERED MEDIA LAYOUT
+   =====================================================================
+
+   LEFT                       CENTER                 RIGHT
+   Title / Live / summary     Huge trailer/media     Price / DLC / metadata
+
+   The actual grid TRACK sizes are reordered along with the grid areas.
+   This is important: the large --uw9-media width belongs to the CENTER
+   track, while the two information columns retain their narrower widths.
+   ===================================================================== */
+
+/* Keep the central media visually flush with the two side rails. */
+html.uw9-active #game_highlights.uw9-shell > .leftcol {
+    align-self: start !important;
+}
+
+/* About This Game remains attached beneath the CENTER media lane through
+   V11's continuation logic because it lives inside the media .leftcol. */
+html.uw9-active #uw11-left-continuation {
+    width: 100% !important;
+    max-width: none !important;
+}
+
+/* =====================================================================
+   V65 - APP PAGE PURCHASE MODULE: ALWAYS RIGHT
+   =====================================================================
+
+   JS now moves Steam's purchase root into #uw9-aux on every app page.
+   Keep it as the first right-rail module even when Steam appends/rebuilds
+   neighboring DLC, event, metadata, or compatibility modules later.
+
+   This section applies only to /app/* pages through webkit.css. The Store
+   homepage CSS/JS are intentionally untouched from V64.
+   ===================================================================== */
+
+html.uw9-active #uw9-aux > .uw65-purchase-section,
+html.uw9-active #uw9-aux > #game_area_purchase {
+    order: -1000 !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+html.uw9-active #uw9-aux > .uw65-purchase-section .game_area_purchase_game_wrapper,
+html.uw9-active #uw9-aux > .uw65-purchase-section .game_area_purchase_game,
+html.uw9-active #uw9-aux > .uw65-purchase-section .game_purchase_action,
+html.uw9-active #uw9-aux > #game_area_purchase .game_area_purchase_game_wrapper,
+html.uw9-active #uw9-aux > #game_area_purchase .game_area_purchase_game,
+html.uw9-active #uw9-aux > #game_area_purchase .game_purchase_action {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+
+/* =====================================================================
+   CUSTOMER REVIEWS — NATIVE REACT-SAFE VIEWPORT
+   =====================================================================
+
+   Earlier prototypes reparented individual React-owned review cards, which
+   broke Steam's filter updates. The current implementation never moves a
+   review card. JavaScript moves only Steam's OUTER review root into this
+   full-width viewport, preserving React ownership of every native child.
+   ===================================================================== */
+
+html.uw9-active #uw-review-section {
+    /*
+       V77: Keep deliberate mouse gutters on both sides of the nested review
+       scroller. On very wide displays the app layout can otherwise consume
+       almost the entire browser width, leaving nowhere convenient to place
+       the pointer when the user wants to scroll the outer Steam page.
+
+       The subtraction is the TOTAL space removed from the review section, so
+       it produces roughly half this value as a gutter on each side.
+    */
+    width: calc(
+        min(var(--uw9-total), 100vw) - clamp(160px, 5vw, 320px)
+    ) !important;
+    max-width: calc(100vw - clamp(160px, 5vw, 320px)) !important;
+    min-width: 0 !important;
+
+    margin: 26px auto 0 auto !important;
+    padding: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+html.uw9-active #uw-review-viewport {
+    position: relative !important;
+
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+
+    /*
+       V76: Give the review browser substantially more breathing room.
+       The previous 1280px ceiling became cramped once the native review
+       summary/filter chrome was pinned above the scrolling cards. On a tall
+       ultrawide display this is intentionally about twice the former height.
+    */
+    height: clamp(1520px, 136vh, 2560px) !important;
+    min-height: 0 !important;
+    max-height: 2560px !important;
+
+    margin: 0 !important;
+    padding: 0 10px 14px 0 !important;
+
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+
+    /*
+       V77: Allow vertical scroll chaining. While the pointer is over the
+       comments, the review viewport scrolls normally; once it reaches its
+       top or bottom edge, Chromium hands continued wheel/trackpad movement to
+       the outer Steam document. Horizontal overscroll remains contained.
+    */
+    overscroll-behavior-x: contain !important;
+    overscroll-behavior-y: auto !important;
+    scrollbar-gutter: stable !important;
+
+    box-sizing: border-box !important;
+}
+
+/*
+   Keep Steam's native review chrome visually frozen while cards move beneath.
+
+   JavaScript does the pinning with a tiny translateY update once per animation
+   frame. We intentionally do not rely solely on position:sticky because Steam
+   templates sometimes insert overflow/contain wrappers between the header and
+   the theme-owned scrolling viewport, which can change sticky containment.
+*/
+/*
+   V73 pins several native pre-review branches as one visual header. Steam's
+   current review UI can split the score summary, dropdown bar and active-filter
+   row into separate generated DIVs, so pinning one guessed wrapper is not
+   reliable. Each selected branch gets the SAME inverse-scroll translation.
+*/
+html.uw9-active #uw-review-viewport .uw-review-pinned-piece {
+    position: relative !important;
+    /*
+       V81: Pinned controls must paint above both the backing plate and Steam's
+       histogram. The graph gets its own explicit layer immediately below.
+    */
+    z-index: 140 !important;
+
+    transform: translate3d(
+        0,
+        var(--uw-review-pin-y, 0px),
+        0
+    ) !important;
+
+    overflow: visible !important;
+    isolation: isolate !important;
+    will-change: transform;
+}
+
+/*
+   V80: Steam owns the histogram wrapper's collapse/expand behavior. Keep only
+   the inverse-scroll transform from the generic pinned-piece rule and give
+   Steam back control of clipping/isolation on the known graph branch.
+*/
+html.uw9-active #uw-review-viewport
+[data-uw-review-graph-branch="1"] {
+    /*
+       V81 GRAPH PAINT LAYER
+
+       Steam can temporarily change/remove the generic pinned-piece class while
+       collapsing and expanding its histogram. The graph branch keeps a stable
+       data attribute, so layer it independently of that transient class.
+
+       The opaque theme backdrop is z-index 110. Keeping the graph branch at
+       130 guarantees its bars/canvas paint above that plate while the filter
+       controls remain above the graph at 140. Pointer behavior stays native.
+    */
+    position: relative !important;
+    z-index: 130 !important;
+    overflow: revert !important;
+    isolation: auto !important;
+    will-change: auto;
+}
+
+/*
+   Theme-owned backing plate behind the pinned native controls. It prevents
+   moving review cards from showing through gaps between Steam's separate
+   summary/filter branches. The element has no pointer events and does not
+   replace or intercept any native Steam controls.
+*/
+html.uw9-active #uw-review-viewport > #uw-review-pin-backdrop {
+    position: absolute !important;
+    inset: 0 0 auto 0 !important;
+
+    width: 100% !important;
+    height: var(--uw-review-pin-h, 0px) !important;
+
+    transform: translate3d(
+        0,
+        var(--uw-review-pin-y, 0px),
+        0
+    ) !important;
+
+    background: #1b2838 !important;
+    box-shadow: 0 8px 14px rgba(0, 0, 0, 0.32) !important;
+
+    pointer-events: none !important;
+    z-index: 110 !important;
+    will-change: transform;
+}
+
+/*
+   Normalize only the ancestor chain between discovered header branches and our
+   viewport. This makes the paint transform tolerant of Steam overflow/contain
+   wrappers without changing DOM ownership or relying on visible-language text.
+*/
+html.uw9-active #uw-review-viewport .uw-review-pin-chain {
+    overflow: visible !important;
+    contain: none !important;
+}
+
+/* Keep anchor/focus scrolling from placing a review underneath the pinned bar. */
+html.uw9-active #uw-review-viewport {
+    /* Updated live by JS from the actual visible pinned chrome height. */
+    scroll-padding-top: calc(var(--uw-review-pin-h, 260px) + 16px) !important;
+}
+
+/* The only Steam review node moved is this OUTER review root. */
+html.uw9-active #uw-review-viewport > .uw-native-review-root {
+    position: relative !important;
+
+    display: block !important;
+
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    float: none !important;
+    clear: both !important;
+
+    margin: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+/* Remove Valve's old centered-page width caps without changing DOM ownership. */
+html.uw9-active #uw-review-viewport #app_reviews_hash,
+html.uw9-active #uw-review-viewport .review_ctn,
+html.uw9-active #uw-review-viewport .review_ctn > .page_content,
+html.uw9-active #uw-review-viewport .responsive_apppage_reviewblock,
+html.uw9-active #uw-review-viewport .app_reviews_area,
+html.uw9-active #uw-review-viewport .user_reviews_container {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+/* Classic Store review cards may still carry the old narrow-page max width. */
+html.uw9-active #uw-review-viewport .review_box,
+html.uw9-active #uw-review-viewport [id^="ReviewContent"] {
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* Generated sentinel is outside Steam's React root and has no visual weight. */
+html.uw9-active #uw-review-sentinel {
+    display: block !important;
+    width: 100% !important;
+    height: 2px !important;
+    min-height: 2px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Steam-ish scrollbar: visible enough to make the nested viewport obvious. */
+html.uw9-active #uw-review-viewport::-webkit-scrollbar {
+    width: 14px;
+}
+
+html.uw9-active #uw-review-viewport::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.20);
+}
+
+html.uw9-active #uw-review-viewport::-webkit-scrollbar-thumb {
+    background: rgba(103, 151, 187, 0.55);
+    border: 3px solid rgba(0, 0, 0, 0.20);
+    border-radius: 8px;
+}
+
+html.uw9-active #uw-review-viewport::-webkit-scrollbar-thumb:hover {
+    background: rgba(103, 151, 187, 0.78);
+}
+
+@media (max-height: 1100px) {
+    html.uw9-active #uw-review-viewport {
+        /* Preserve the V76 ~2x sizing intent on shorter displays too. */
+        height: 1440px !important;
+        max-height: 1440px !important;
+    }
+}
+
+
+/* =====================================================================
+   CUSTOMER REVIEWS — THEME-OWNED CONTINUATION
+   =====================================================================
+
+   Additional JSON review batches are rendered outside Steam's React tree.
+   This grid is presentation-only and therefore cannot interfere with Steam's
+   native filter reconciliation.
+   ===================================================================== */
+
+html.uw9-active #uw-extra-reviews {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 14px !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin: 18px 0 0 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+}
+
+html.uw9-active .uw-extra-review-card {
+    display: flex !important;
+    flex-direction: column !important;
+    min-width: 0 !important;
+    min-height: 180px !important;
+    padding: 14px !important;
+    background: rgba(22, 32, 45, 0.92) !important;
+    border: 1px solid rgba(103, 151, 187, 0.24) !important;
+    box-sizing: border-box !important;
+    overflow-wrap: anywhere !important;
+}
+
+html.uw9-active .uw-review-head {
+    display: flex !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    align-items: baseline !important;
+    min-width: 0 !important;
+}
+
+html.uw9-active .uw-review-profile {
+    color: #c7d5e0 !important;
+    text-decoration: none !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+html.uw9-active .uw-review-profile:hover {
+    color: #ffffff !important;
+}
+
+html.uw9-active .uw-review-verdict {
+    flex: 0 0 auto !important;
+    font-weight: 600 !important;
+}
+
+html.uw9-active .uw-review-verdict.positive {
+    color: #66c0f4 !important;
+}
+
+html.uw9-active .uw-review-verdict.negative {
+    color: #d67b7b !important;
+}
+
+html.uw9-active .uw-review-meta,
+html.uw9-active .uw-review-foot {
+    margin-top: 6px !important;
+    color: #8091a2 !important;
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+}
+
+html.uw9-active .uw-review-body {
+    margin-top: 12px !important;
+    color: #d6d7d8 !important;
+    line-height: 1.45 !important;
+    white-space: pre-wrap !important;
+    overflow-wrap: anywhere !important;
+}
+
+html.uw9-active .uw-review-foot {
+    margin-top: auto !important;
+    padding-top: 12px !important;
+}
+
+html.uw9-active #uw-review-controls {
+    width: 100% !important;
+    margin: 18px 0 8px 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+}
+
+html.uw9-active #uw-see-more-reviews {
+    min-height: 38px !important;
+    padding: 0 18px !important;
+    border: 0 !important;
+    border-radius: 3px !important;
+    background: linear-gradient(to right, #75b022 5%, #588a1b 95%) !important;
+    color: #d2efa9 !important;
+    cursor: pointer !important;
+}
+
+html.uw9-active #uw-see-more-reviews:hover:not(:disabled) {
+    background: linear-gradient(to right, #8ed629 5%, #6aa621 95%) !important;
+    color: #ffffff !important;
+}
+
+html.uw9-active #uw-see-more-reviews:disabled {
+    opacity: 0.55 !important;
+    cursor: default !important;
+}
+
+html.uw9-active #uw-review-status {
+    color: #8f98a0 !important;
+    min-height: 1em !important;
+}
+
+@media (max-width: 3600px) {
+    html.uw9-active #uw-extra-reviews {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    }
+}
+
+@media (max-width: 2900px) {
+    html.uw9-active #uw-extra-reviews {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}
+
+/* =====================================================================
+   CUSTOMER REVIEWS — VISIBLE ACTIONS / COMPLIANCE
+   =====================================================================
+
+   The native "Browse All Reviews" presentation is visually suppressed only
+   after JavaScript has copied its exact destination into the visible
+   "Open Full Reviews" link. Core navigation therefore remains available.
+   ===================================================================== */
+
+html.uw9-active #uw-review-viewport .uw-native-browse-hidden {
+    display: none !important;
+}
+
+html.uw9-active #uw-review-controls {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+}
+
+html.uw9-active #uw-open-full-reviews {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 38px !important;
+    padding: 0 18px !important;
+    border-radius: 3px !important;
+    background: linear-gradient(to right, #27425f 5%, #1b2838 95%) !important;
+    color: #d6d7d8 !important;
+    text-decoration: none !important;
+    box-sizing: border-box !important;
+}
+
+html.uw9-active #uw-open-full-reviews:hover {
+    background: linear-gradient(to right, #66c0f4 5%, #2d73a5 95%) !important;
+    color: #ffffff !important;
+}
+
+html.uw9-active #uw-open-full-reviews[hidden] {
+    display: none !important;
+}

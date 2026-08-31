@@ -1,0 +1,18 @@
+# Operating-system files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.code-workspace
+
+# Temporary / backup files
+*.tmp
+*.bak
+*.swp
+*~
+
+# Local release archives
+*.zip

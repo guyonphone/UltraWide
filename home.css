@@ -1,0 +1,1587 @@
+/* =====================================================================
+   ULTRAWIDE — MAIN STEAM STORE HOMEPAGE
+   =====================================================================
+
+   This file is the frozen/stable homepage presentation. v68 changes comments
+   and package metadata only; layout behavior is intentionally preserved.
+
+   Steam's native top homepage region remains untouched.
+
+   Below that we use THREE INDEPENDENT VERTICAL LANES instead of one CSS
+   grid. This removes the shared-row-height problem that caused huge blank
+   areas when one module (especially the Releases list) became very tall.
+
+   Fixed first row:
+       LEFT   = Discounts & Events
+       MIDDLE = Browse by Category
+       RIGHT  = Popular New Releases / Top Sellers / Popular Upcoming /
+                Specials / Trending Free
+
+   Everything after that is assigned to whichever lane is currently shortest.
+   ===================================================================== */
+
+html.uw25-home-active {
+    --uw25-home-width: min(96vw, 7200px);
+    --uw25-gap: 18px;
+}
+
+html.uw25-home-active #uw25-home-waterfall {
+    width: var(--uw25-home-width) !important;
+    max-width: none !important;
+    min-width: 0 !important;
+
+    margin: 0 auto 60px auto !important;
+    padding: 0 !important;
+
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: var(--uw25-gap) !important;
+    align-items: start !important;
+
+    box-sizing: border-box !important;
+}
+
+html.uw25-home-active .uw25-lane {
+    min-width: 0 !important;
+    width: 100% !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+
+    gap: var(--uw25-gap) !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+html.uw25-home-active .uw25-home-module {
+    display: block !important;
+
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    float: none !important;
+    clear: both !important;
+
+    margin: 0 !important;
+
+    box-sizing: border-box !important;
+    break-inside: avoid !important;
+}
+
+/* Relax Valve's narrow page-width caps ONLY inside modules we deliberately move. */
+html.uw25-home-active .uw25-home-module > *,
+html.uw25-home-active .uw25-home-module [class*="home_page_content"],
+html.uw25-home-active .uw25-home-module [class*="HomePageContent"] {
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+}
+
+html.uw25-home-active .uw25-home-module [class*="carousel"],
+html.uw25-home-active .uw25-home-module [class*="Carousel"] {
+    max-width: 100% !important;
+}
+
+/* Full Steam releases module: tab strip + list + detail preview remain together. */
+html.uw25-home-active .uw25-releases-module {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+}
+
+html.uw25-home-active .uw25-releases-module [class*="tab"],
+html.uw25-home-active .uw25-releases-module [class*="Tab"] {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Old wrappers which become empty after their module is moved. */
+html.uw25-home-active .uw25-home-vacated {
+    display: none !important;
+
+    width: 0 !important;
+    height: 0 !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    overflow: hidden !important;
+}
+
+/* Two lanes on a smaller ultrawide Steam window. */
+@media (max-width: 3000px) {
+    html.uw25-home-active #uw25-home-waterfall {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}
+
+/* Normal-width Steam client: stack cleanly instead of crushing cards. */
+@media (max-width: 1900px) {
+    html.uw25-home-active #uw25-home-waterfall {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+}
+
+
+/* =====================================================================
+   V26 - DEEP RECOMMENDATION-FEED WATERFALL
+   ===================================================================== */
+
+/*
+   Geometry-discovered modules from Steam's long recommendation feed use
+   exactly the same lane behavior as the named modules above.
+*/
+html.uw25-home-active .uw26-deep-module {
+    display: block !important;
+
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    float: none !important;
+    clear: both !important;
+
+    margin: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+/*
+   Steam recommendation-feed blocks are normally ~940 CSS px wide. Once
+   moved into a lane, allow their immediate content wrapper to consume the
+   lane width rather than retaining its old centered-page max-width.
+*/
+html.uw25-home-active .uw26-deep-module > *,
+html.uw25-home-active .uw26-deep-module [class*="home_page_content"],
+html.uw25-home-active .uw26-deep-module [class*="HomePageContent"],
+html.uw25-home-active .uw26-deep-module [class*="recommend"],
+html.uw25-home-active .uw26-deep-module [class*="Recommend"] {
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/*
+   Keep the footer visually stock, but JS relocates it AFTER the waterfall
+   so it cannot appear halfway through Steam's dynamically appended feed.
+*/
+html.uw25-home-active .uw26-footer-after-waterfall {
+    clear: both !important;
+}
+
+
+/* =====================================================================
+   V27 - COLUMN CONTAINMENT / CAROUSEL CONTROLS / OVERFLOW FIT
+   ===================================================================== */
+
+/*
+   Every moved module gets a slot.
+
+   The slot is the HARD horizontal boundary of one waterfall lane. Nothing
+   inside a Steam module is allowed to paint over the neighboring lane.
+*/
+html.uw25-home-active .uw27-module-slot {
+    position: relative !important;
+
+    display: block !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    height: auto;
+    min-height: 1px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    overflow-x: clip !important;
+    overflow-y: visible !important;
+
+    contain: layout !important;
+    box-sizing: border-box !important;
+}
+
+/*
+   When JS finds a truly fixed-width Steam module, the module is kept at
+   its native internal width and proportionally fitted into its slot.
+
+   Absolute positioning is required because CSS transforms do not reduce
+   normal-flow height; JS gives the slot the correctly scaled height.
+*/
+html.uw25-home-active .uw27-module-slot.uw27-fitted {
+    overflow: clip !important;
+}
+
+html.uw25-home-active
+.uw27-module-slot.uw27-fitted
+> .uw25-home-module {
+    position: absolute !important;
+
+    top: 0 !important;
+    left: 0 !important;
+
+    max-width: none !important;
+
+    transform-origin: top left !important;
+    will-change: transform !important;
+}
+
+/* ---------------------------------------------------------------------
+   CAROUSEL ARROWS
+   ---------------------------------------------------------------------
+
+   Valve normally puts these roughly 40-50px OUTSIDE a homepage carousel.
+   That looks fine on a narrow centered page, but terrible between three
+   adjacent ultrawide columns.
+
+   Pull them INSIDE their own module.
+   --------------------------------------------------------------------- */
+
+html.uw25-home-active .uw25-home-module .arrow.left,
+html.uw25-home-active .uw25-home-module [class*="carousel"] .arrow.left,
+html.uw25-home-active .uw25-home-module [class*="Carousel"] .arrow.left,
+html.uw25-home-active .uw25-home-module [class*="carousel"] [class*="arrow"][class*="left"],
+html.uw25-home-active .uw25-home-module [class*="Carousel"] [class*="Arrow"][class*="Left"] {
+    left: 6px !important;
+    right: auto !important;
+
+    margin-left: 0 !important;
+
+    z-index: 30 !important;
+}
+
+html.uw25-home-active .uw25-home-module .arrow.right,
+html.uw25-home-active .uw25-home-module [class*="carousel"] .arrow.right,
+html.uw25-home-active .uw25-home-module [class*="Carousel"] .arrow.right,
+html.uw25-home-active .uw25-home-module [class*="carousel"] [class*="arrow"][class*="right"],
+html.uw25-home-active .uw25-home-module [class*="Carousel"] [class*="Arrow"][class*="Right"] {
+    right: 6px !important;
+    left: auto !important;
+
+    margin-right: 0 !important;
+
+    z-index: 30 !important;
+}
+
+/*
+   A little local contrast keeps the inset arrows readable without having
+   giant chevrons floating in the gutter.
+*/
+html.uw25-home-active .uw25-home-module .arrow.left,
+html.uw25-home-active .uw25-home-module .arrow.right {
+    border-radius: 4px !important;
+}
+
+/* ---------------------------------------------------------------------
+   COMMON FIXED-WIDTH STEAM WRAPPERS
+   --------------------------------------------------------------------- */
+
+html.uw25-home-active .uw25-home-module .home_page_content,
+html.uw25-home-active .uw25-home-module .carousel_container,
+html.uw25-home-active .uw25-home-module [class*="carousel_container"],
+html.uw25-home-active .uw25-home-module [class*="CarouselContainer"],
+html.uw25-home-active .uw25-home-module [class*="cluster"],
+html.uw25-home-active .uw25-home-module [class*="Cluster"] {
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+/*
+   V26 used this class when it moved the footer. V27 intentionally does NOT
+   move the footer because Steam's original placement/loading structure is
+   useful to the long recommendation feed.
+*/
+html.uw25-home-active .uw26-footer-after-waterfall {
+    clear: unset !important;
+}
+
+
+/* =====================================================================
+   V28 - FULL-SIZE RELEASES MODULE + LAZY-LOAD RUNWAY
+   ===================================================================== */
+
+/*
+   Never scale the five-tab Releases / Top Sellers module.
+   Its inner list + detail pane is already a coherent responsive module.
+*/
+html.uw25-home-active
+.uw27-module-slot
+> .uw25-releases-module {
+    position: relative !important;
+
+    top: auto !important;
+    left: auto !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    transform: none !important;
+
+    box-sizing: border-box !important;
+}
+
+html.uw25-home-active
+.uw27-module-slot:has(> .uw25-releases-module) {
+    height: auto !important;
+    overflow-x: clip !important;
+    overflow-y: visible !important;
+}
+
+html.uw25-home-active
+.uw25-releases-module > * {
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/*
+   The runway is normally zero-height.
+
+   Near the current end of the page JS temporarily grows it, keeping Steam's
+   footer at the bottom while giving Valve's lazy/infinite home feed another
+   viewport or two of scrolling in which to append content.
+*/
+html.uw25-home-active #uw28-load-runway {
+    grid-column: 1 / -1 !important;
+
+    width: 100% !important;
+    height: var(--uw28-runway-height, 0px) !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    pointer-events: none !important;
+    opacity: 0 !important;
+
+    transition: height 180ms ease-out !important;
+}
+
+/*
+   Sections that haven't populated yet remain in Steam's original DOM.
+   We do NOT hide their wrapper just because another sibling was moved.
+*/
+html.uw25-home-active .uw28-awaiting-content {
+    display: block !important;
+}
+
+
+/* =====================================================================
+   V29 - TRUE DYNAMIC WATERFALL
+   ===================================================================== */
+
+/*
+   IMPORTANT:
+   Never completely hide an emptied Steam feed host.
+
+   Valve can reuse the SAME host later when it appends another batch of
+   personalized content. `display:none` can prevent that new batch from
+   participating in layout / visibility / lazy-loading.
+
+   `display:contents` removes the empty box while preserving the DOM host.
+   If Steam appends children later they immediately become visible and our
+   MutationObserver can harvest them.
+*/
+html.uw25-home-active .uw25-home-vacated {
+    display: contents !important;
+
+    width: auto !important;
+    height: auto !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    overflow: visible !important;
+}
+
+/*
+   V28's artificial runway could grow to several viewport heights. It did
+   add scroll distance, but visually produced exactly the giant empty areas
+   we are trying to eliminate.
+
+   V29 disables that mechanism. Steam's own loader/sentinel remains in its
+   original DOM and drives continuation naturally.
+*/
+html.uw25-home-active #uw28-load-runway {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+}
+
+/*
+   Smooth reflow is intentionally NOT animated with transforms. Animating
+   module positions while Steam carousels are running tends to create visual
+   artifacts. Repacking is instant, and JS preserves the user's scroll anchor.
+*/
+html.uw25-home-active .uw27-module-slot {
+    contain: layout paint !important;
+}
+
+/*
+   Don't let a Steam module report a few pixels of shadow/arrow overflow as a
+   reason to shrink itself. Real fixed-width overflow is still fitted by JS.
+*/
+html.uw25-home-active .uw25-home-module {
+    overflow-x: clip !important;
+}
+
+
+/* =====================================================================
+   V30 - STRUCTURED WATERFALL
+   ===================================================================== */
+
+/*
+   V29 was excellent at consuming space, but visually too random because
+   every module competed equally for the shortest column.
+
+   V30 gives modules stable visual roles:
+     compact  -> strongly prefers LEFT
+     feature  -> MIDDLE / RIGHT
+     standard -> height-balanced across all three
+*/
+
+html.uw25-home-active .uw30-kind-compact {
+    /* compact rows should visually read like a discovery rail */
+    margin-bottom: 0 !important;
+}
+
+html.uw25-home-active .uw30-kind-feature {
+    /* large recommendation cards remain visually substantial */
+    width: 100% !important;
+}
+
+html.uw25-home-active .uw30-kind-standard {
+    width: 100% !important;
+}
+
+/*
+   Keep module spacing visually consistent regardless of what Steam's
+   original wrapper happened to use.
+*/
+html.uw25-home-active .uw25-lane > .uw27-module-slot {
+    margin: 0 !important;
+}
+
+/*
+   Slightly more breathing room inside large recommendation cards while
+   keeping the three-column gutter compact.
+*/
+html.uw25-home-active
+.uw30-kind-feature
+[class*="recommend"],
+html.uw25-home-active
+.uw30-kind-feature
+[class*="Recommend"] {
+    box-sizing: border-box !important;
+}
+
+/*
+   Do not let very small compact modules look like detached islands because
+   of large inherited Steam margins.
+*/
+html.uw25-home-active
+.uw30-kind-compact > * {
+    margin-top: 0 !important;
+}
+
+
+/* =====================================================================
+   V31 - CURATED COLUMN COMPOSITION
+   ===================================================================== */
+
+/*
+   The LEFT lane is now a true "shelf rail".
+   Qualifying compact modules get one common frame so Valve's many slightly
+   different homepage templates read as one coherent component family.
+*/
+html.uw25-home-active
+#uw25-lane-left
+> .uw27-module-slot.uw31-left-shelf {
+    padding: 10px 12px 12px !important;
+
+    background:
+        rgba(8, 20, 31, 0.42) !important;
+
+    border:
+        1px solid rgba(103, 151, 187, 0.12) !important;
+
+    border-radius: 3px !important;
+
+    box-sizing: border-box !important;
+}
+
+/*
+   The actual Steam module fills the shelf frame. We do not distort it.
+*/
+html.uw25-home-active
+#uw25-lane-left
+> .uw27-module-slot.uw31-left-shelf
+> .uw25-home-module {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    margin: 0 !important;
+}
+
+/*
+   Keep large images from one Steam shelf becoming dramatically taller than
+   neighboring shelf cards. This is deliberately conservative: only images
+   inside app links in modules that qualified as a uniform LEFT shelf.
+*/
+html.uw25-home-active
+#uw25-lane-left
+> .uw27-module-slot.uw31-left-shelf
+a[href*="/app/"] img {
+    max-height: 150px !important;
+    object-fit: cover !important;
+}
+
+/*
+   A gentle separator gives successive left shelves a repeatable rhythm,
+   even when the internal Steam component differs slightly.
+*/
+html.uw25-home-active
+#uw25-lane-left
+> .uw27-module-slot.uw31-left-shelf
++ .uw27-module-slot.uw31-left-shelf {
+    margin-top: 0 !important;
+}
+
+/*
+   Odd compact modules are explicitly NOT styled like left shelves.
+*/
+html.uw25-home-active
+.uw31-irregular-compact {
+    background: none !important;
+    border: 0 !important;
+    padding: 0 !important;
+}
+
+/*
+   Middle lane's two priority modules should visually form one deliberate
+   opening stack rather than appearing hundreds of pixels apart.
+*/
+html.uw25-home-active
+#uw25-lane-middle
+> .uw27-module-slot.uw31-middle-priority {
+    margin: 0 !important;
+}
+
+
+/* =====================================================================
+   V32 - PROTECTED PRIORITY MODULES + NORMALIZED GENRE SHELVES
+   ===================================================================== */
+
+/*
+   Protected modules are never transformed by generic sizing rules.
+*/
+html.uw25-home-active
+.uw32-protected-module {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    transform: none !important;
+    box-sizing: border-box !important;
+}
+
+/*
+   Browse + Community are deliberately a compact opening stack in MIDDLE.
+*/
+html.uw25-home-active
+#uw25-lane-middle
+> .uw27-module-slot.uw32-middle-fixed {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* ---------------------------------------------------------------------
+   NORMALIZED PERSONALIZED GENRE ROWS
+   ---------------------------------------------------------------------
+
+   Steam's "X games — Due to your recent playtime in other X games" modules
+   can contain 1, 2, 3, 4, or 5 recommendations. Valve expands the remaining
+   cards to fill its normal narrow page, producing the giant/small/giant
+   visual rhythm seen in the recording.
+
+   V32 re-homes the detected game-card containers into a fixed 4-column grid.
+   A row with only two recommendations therefore has two normal-size cards
+   instead of two enormous cards.
+*/
+
+html.uw25-home-active
+.uw32-genre-module {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    padding: 10px 12px 12px !important;
+
+    background:
+        rgba(8, 20, 31, 0.42) !important;
+
+    border:
+        1px solid rgba(103, 151, 187, 0.12) !important;
+
+    border-radius: 3px !important;
+
+    box-sizing: border-box !important;
+}
+
+html.uw25-home-active
+.uw32-genre-grid {
+    display: grid !important;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr)) !important;
+
+    gap: 8px !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    margin-top: 7px !important;
+
+    box-sizing: border-box !important;
+}
+
+html.uw25-home-active
+.uw32-genre-card {
+    position: relative !important;
+
+    display: block !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    height: 118px !important;
+    min-height: 118px !important;
+    max-height: 118px !important;
+
+    margin: 0 !important;
+
+    overflow: hidden !important;
+
+    background:
+        rgba(0, 0, 0, 0.22) !important;
+
+    border-radius: 2px !important;
+
+    box-sizing: border-box !important;
+}
+
+html.uw25-home-active
+.uw32-genre-card img {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    height: 100% !important;
+    max-height: 118px !important;
+
+    object-fit: cover !important;
+
+    margin: 0 !important;
+}
+
+/*
+   Price / wishlist badges inside Steam's card wrapper remain visible.
+*/
+html.uw25-home-active
+.uw32-genre-card [class*="discount"],
+html.uw25-home-active
+.uw32-genre-card [class*="price"],
+html.uw25-home-active
+.uw32-genre-card [class*="wishlist"] {
+    z-index: 5 !important;
+}
+
+/*
+   Once a genre module is normalized, never pass it through V27's transform
+   fit system. The grid itself is already lane-responsive.
+*/
+html.uw25-home-active
+.uw27-module-slot:has(> .uw32-genre-module) {
+    height: auto !important;
+    overflow: visible !important;
+}
+
+html.uw25-home-active
+.uw27-module-slot
+> .uw32-genre-module {
+    position: relative !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    transform: none !important;
+
+    top: auto !important;
+    left: auto !important;
+}
+
+/*
+   Remove V31's generic image-height treatment from the normalized rows.
+*/
+html.uw25-home-active
+#uw25-lane-left
+> .uw27-module-slot.uw32-genre-shelf
+a[href*="/app/"] img {
+    max-height: 118px !important;
+}
+
+/*
+   Normalized genre shelves all use the same outer presentation.
+*/
+html.uw25-home-active
+#uw25-lane-left
+> .uw27-module-slot.uw32-genre-shelf {
+    padding: 0 !important;
+    border: 0 !important;
+    background: none !important;
+}
+
+
+/* =====================================================================
+   V39 - EXACT UTILITY MODULES + LANE STARVATION RECOVERY
+   ===================================================================== */
+
+/*
+   These are REAL individual Steam modules. We deliberately let V32's existing
+   module fitter size them to the middle column instead of inventing another
+   scaling system.
+*/
+html.uw25-home-active
+.uw39-utility-module {
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+}
+
+html.uw25-home-active
+.uw27-module-slot.uw39-utility-slot {
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/*
+   A feature card may occasionally enter the left lane only when that lane
+   has become badly starved. Keep it cleanly contained there.
+*/
+html.uw25-home-active
+#uw25-lane-left
+.uw27-module-slot.uw39-left-recovery {
+    overflow: hidden !important;
+}
+
+html.uw25-home-active
+#uw25-lane-left
+.uw27-module-slot.uw39-left-recovery
+> .uw25-home-module {
+    max-width: none !important;
+}
+
+/* Preserve the useful one-card personalized shelf normalization. */
+html.uw25-home-active
+.uw32-genre-grid {
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr)) !important;
+    align-items: stretch !important;
+}
+
+html.uw25-home-active
+.uw32-genre-card {
+    aspect-ratio: 16 / 7 !important;
+    height: auto !important;
+    min-height: 104px !important;
+    max-height: 124px !important;
+}
+
+html.uw25-home-active
+.uw32-genre-card img {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 104px !important;
+    max-height: 124px !important;
+    object-fit: cover !important;
+}
+
+
+/* =====================================================================
+   V43 - LOW-COST CALENDAR / DISCOVERY PLACEMENT
+   ===================================================================== */
+
+html.uw25-home-active
+.uw27-module-slot.uw43-calendar-slot,
+html.uw25-home-active
+.uw27-module-slot.uw43-middle-utility {
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+}
+
+html.uw25-home-active
+#uw25-lane-left
+.uw27-module-slot.uw43-calendar-slot {
+    overflow: hidden !important;
+}
+
+/* Preserve the useful V39 shelf normalization. */
+html.uw25-home-active
+.uw32-genre-grid {
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr)) !important;
+    align-items: stretch !important;
+}
+
+html.uw25-home-active
+.uw32-genre-card {
+    aspect-ratio: 16 / 7 !important;
+    height: auto !important;
+    min-height: 104px !important;
+    max-height: 124px !important;
+}
+
+
+/* =====================================================================
+   V46 - PERSONAL CALENDAR STRUCTURAL CAPTURE
+   ===================================================================== */
+html.uw25-home-active
+#uw25-lane-left
+.uw27-module-slot.uw46-calendar-slot {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+}
+
+html.uw25-home-active
+.uw46-calendar-module {
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+}
+
+
+/* =====================================================================
+   V47 - EXACT NATIVE PERSONAL CALENDAR
+   DevTools-confirmed Steam container: .personal_calendar_ctn
+   ===================================================================== */
+html.uw25-home-active
+#uw25-lane-left
+> .personal_calendar_ctn {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    transform: none !important;
+    margin: 0 0 28px 0 !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+    contain: none !important;
+}
+
+html.uw25-home-active
+#uw25-lane-left
+> .personal_calendar_ctn
+> * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Calendar is native/raw in V47: never give it the generic fitted-module rules. */
+html.uw25-home-active
+.personal_calendar_ctn.uw25-home-module {
+    transform: none !important;
+    position: relative !important;
+}
+
+
+/* =====================================================================
+   V48 - FIXED TOP-LEFT NATIVE PAIR
+
+   Centered Featured & Recommended remains STOCK above #uw25-home-waterfall.
+   Inside the left lane the order is now always:
+     1) Personal Calendar
+     2) Explore Your Discovery Queue
+     3) Discounts & Events / normal feed
+
+   The negative flex order is deliberate. V31 reflow can prepend pinned slots
+   in DOM order, but it cannot visually push these two native modules down.
+   ===================================================================== */
+html.uw25-home-active
+#uw25-lane-left
+> .personal_calendar_ctn {
+    order: -2000 !important;
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+}
+
+html.uw25-home-active
+#uw25-lane-left
+> .home_pagecontent_ctn[data-uw48-top-left="discovery"] {
+    order: -1990 !important;
+    flex: 0 0 auto !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    transform: none !important;
+
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+    contain: none !important;
+}
+
+html.uw25-home-active
+#uw25-lane-left
+> .home_pagecontent_ctn[data-uw48-top-left="discovery"]
+> * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+
+/* =====================================================================
+   V50 - REFLOW-AWARE TOP-LEFT SLOT
+
+   One pinned slot participates in the waterfall's existing ordering/height
+   model. This avoids V49's independent wrapper fighting the reflow loop.
+
+   LEFT TOP:
+       Personal Calendar
+       Explore Your Discovery Queue
+       Discounts & Events
+   ===================================================================== */
+html.uw25-home-active
+#uw25-lane-left
+> #uw50-top-left-slot {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: var(--uw25-gap) !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    position: relative !important;
+    box-sizing: border-box !important;
+
+    /* Raw native modules need their own arrows/media to remain visible. */
+    overflow: visible !important;
+    contain: none !important;
+}
+
+html.uw25-home-active
+#uw50-top-left-slot
+> .personal_calendar_ctn,
+html.uw25-home-active
+#uw50-top-left-slot
+> [data-uw50-top-left="discovery"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    transform: none !important;
+
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+    contain: none !important;
+}
+
+html.uw25-home-active
+#uw50-top-left-slot
+> .personal_calendar_ctn {
+    order: 0 !important;
+}
+
+html.uw25-home-active
+#uw50-top-left-slot
+> [data-uw50-top-left="discovery"] {
+    order: 1 !important;
+}
+
+html.uw25-home-active
+#uw50-top-left-slot
+> .personal_calendar_ctn
+> *,
+html.uw25-home-active
+#uw50-top-left-slot
+> [data-uw50-top-left="discovery"]
+> * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+
+/* =====================================================================
+   V51 - LONG-FEED SAFETY / LANE HEALING
+   ===================================================================== */
+html.uw25-home-active #uw25-lane-left,
+html.uw25-home-active #uw25-lane-middle,
+html.uw25-home-active #uw25-lane-right {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: var(--uw25-gap) !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* Source markers are comments, but keep this for any future element marker. */
+html.uw25-home-active .uw51-source-marker {
+    display: none !important;
+}
+
+/* =====================================================================
+   V57 - NATIVE-FLOW THREE-COLUMN FEED
+   =====================================================================
+
+   V56 absolutely positioned every recommendation card and repeatedly
+   measured the entire growing feed.  That became progressively more
+   expensive, broke Steam's own #content_more geometry, and allowed the
+   footer to appear before the live feed.
+
+   V57 keeps #content_more and every React-owned child in normal flow.
+   The browser lays the direct Steam feed sections out as a three-column
+   CSS Grid.  No card is reparented or absolutely positioned.
+   ===================================================================== */
+html.uw25-home-active .uw56-native-feed-stage,
+html.uw25-home-active .uw57-native-feed-stage {
+    position: relative !important;
+    display: block !important;
+
+    width: var(--uw25-home-width) !important;
+    max-width: none !important;
+    min-width: 0 !important;
+
+    left: auto !important;
+    transform: none !important;
+
+    margin-top: var(--uw25-gap) !important;
+    margin-right: 0 !important;
+    margin-left: calc((100% - var(--uw25-home-width)) / 2) !important;
+
+    padding: 0 !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+}
+
+/*
+   #content_more remains a real box with a real height.  This is important:
+   Steam's infinite-scroll code can once again observe the bottom of its
+   actual content instead of a zero-height display:contents wrapper.
+*/
+html.uw25-home-active .uw57-native-feed-stage #content_more,
+html.uw25-home-active .uw56-native-feed-stage #content_more.uw57-native-feed-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-auto-flow: row !important;
+    align-items: start !important;
+
+    column-gap: var(--uw25-gap) !important;
+    row-gap: var(--uw25-gap) !important;
+
+    position: relative !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+}
+
+/*
+   Every direct child remains in Valve's DOM order.  Real recommendation
+   modules occupy a normal grid cell; loader/structural children are allowed
+   to span all three columns so they do not become tiny stray tiles.
+*/
+html.uw25-home-active .uw57-native-feed-stage #content_more > *,
+html.uw25-home-active .uw56-native-feed-stage #content_more.uw57-native-feed-grid > * {
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+
+    transform: none !important;
+    float: none !important;
+    clear: none !important;
+
+    min-width: 0 !important;
+    max-width: none !important;
+    height: auto !important;
+
+    box-sizing: border-box !important;
+}
+
+html.uw25-home-active .uw57-native-feed-stage #content_more > .uw57-native-feed-card,
+html.uw25-home-active .uw56-native-feed-stage #content_more.uw57-native-feed-grid > .uw57-native-feed-card {
+    grid-column: auto !important;
+
+    width: 100% !important;
+    margin: 0 !important;
+
+    overflow: visible !important;
+}
+
+/* Steam housekeeping / loading nodes should not become narrow tiles. */
+html.uw25-home-active .uw57-native-feed-stage #content_more > .uw57-native-feed-structural,
+html.uw25-home-active .uw56-native-feed-stage #content_more.uw57-native-feed-grid > .uw57-native-feed-structural {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+}
+
+/* Restore all V56 descendant flattening if a page is hot-reloaded in DevTools. */
+html.uw25-home-active .uw57-native-feed-stage .uw56-native-feed-flatten,
+html.uw25-home-active .uw56-native-feed-stage .uw56-native-feed-flatten {
+    display: revert !important;
+    position: static !important;
+    transform: none !important;
+}
+
+/*
+   The original Steam footer stays in its original DOM position for Valve's
+   loader, but JavaScript translates its painted box to the true end of the
+   live feed and reserves real margin space there.
+*/
+html.uw25-home-active #footer.uw57-footer-visual-bottom {
+    position: relative !important;
+    z-index: 20 !important;
+    will-change: transform;
+}
+
+/* Responsive fallbacks for narrower desktop windows. */
+@media (max-width: 3000px) {
+    html.uw25-home-active .uw57-native-feed-stage #content_more,
+    html.uw25-home-active .uw56-native-feed-stage #content_more.uw57-native-feed-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}
+
+@media (max-width: 1900px) {
+    html.uw25-home-active .uw57-native-feed-stage #content_more,
+    html.uw25-home-active .uw56-native-feed-stage #content_more.uw57-native-feed-grid {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+}
+
+
+/* =====================================================================
+   V58 - LIGHTWEIGHT GRID-SPAN MASONRY
+   =====================================================================
+
+   V57's native CSS Grid was dramatically faster because Steam kept full
+   ownership of #content_more and no JavaScript absolute-positioning loop ran
+   while scrolling. The remaining large blank areas were ordinary CSS Grid
+   row-track behavior: the tallest module in each row determined that row's
+   height, leaving empty space below shorter neighbors.
+
+   V58 keeps V57's architecture and performance characteristics. Each feed
+   module stays in Valve's original DOM and remains a normal Grid item. We use
+   tiny grid rows plus a single grid-row span value per card so columns can
+   advance independently like masonry without absolute positioning.
+   ===================================================================== */
+
+html.uw25-home-active .uw57-native-feed-stage #content_more,
+html.uw25-home-active .uw56-native-feed-stage #content_more.uw57-native-feed-grid {
+    --uw58-masonry-row: 8px;
+
+    grid-auto-rows: var(--uw58-masonry-row) !important;
+    grid-auto-flow: row !important;
+    align-items: start !important;
+}
+
+/*
+   Critical: a module must retain its intrinsic content height rather than
+   stretching to the height of its Grid area. JavaScript then converts that
+   intrinsic height into a row span.
+*/
+html.uw25-home-active .uw57-native-feed-stage #content_more > .uw57-native-feed-card,
+html.uw25-home-active .uw56-native-feed-stage #content_more.uw57-native-feed-grid > .uw57-native-feed-card {
+    align-self: start !important;
+    height: auto !important;
+    min-height: 0 !important;
+}
+
+/*
+   Loader/sentinel/housekeeping children remain full-width normal-flow bands.
+   They are intentionally excluded from masonry spans.
+*/
+html.uw25-home-active .uw57-native-feed-stage #content_more > .uw57-native-feed-structural,
+html.uw25-home-active .uw56-native-feed-stage #content_more.uw57-native-feed-grid > .uw57-native-feed-structural {
+    grid-row-start: auto !important;
+    grid-row-end: auto !important;
+    align-self: start !important;
+}
+
+
+
+/* =====================================================================
+   V60 - TOP WATERFALL COMPACTION / FIXED-GAP TRIM
+   =====================================================================
+
+   CSS can safely remove the fixed 60px waterfall bottom margin, but CSS
+   alone cannot fill the variable-height hole beneath a shorter independent
+   lane without overlapping the taller lane. JavaScript handles only that
+   small pre-feed assignment problem; the fast V58 native masonry remains
+   unchanged.
+   ===================================================================== */
+html.uw25-home-active #uw25-home-waterfall {
+    margin-bottom: 0 !important;
+}
+
+html.uw25-home-active .uw56-native-feed-stage,
+html.uw25-home-active .uw57-native-feed-stage {
+    margin-top: var(--uw25-gap) !important;
+}
+
+
+/* =====================================================================
+   V62 - STABLE-V60 FINE TUNE: CENTER NARROW TOP-RIGHT RELEASES MODULE
+   =====================================================================
+
+   V60 is the stable baseline. V62 keeps V61's 90% width for the pinned
+   Releases / Top Sellers module, but centers that narrower module inside the
+   full-width RIGHT lane.
+
+   IMPORTANT: the right lane itself remains a full one-third column. Centering
+   the 90% module splits the unused 10% evenly: 5% on the left and 5% on the
+   right, producing visually balanced breathing room on both sides.
+
+   Tune this single value if desired. 90% remains deliberately conservative.
+   ===================================================================== */
+html.uw25-home-active {
+    --uw61-releases-module-width: 90%;
+}
+
+html.uw25-home-active
+#uw25-lane-right
+> .uw27-module-slot:has(> .uw25-releases-module) {
+    width: var(--uw61-releases-module-width) !important;
+    max-width: var(--uw61-releases-module-width) !important;
+    min-width: 0 !important;
+
+    align-self: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+
+    box-sizing: border-box !important;
+}
+
+html.uw25-home-active
+#uw25-lane-right
+> .uw27-module-slot:has(> .uw25-releases-module)
+> .uw25-releases-module {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+}
+
+
+/* =====================================================================
+   V64 - ROBUST INLINE COMMUNITY REVIEW READER
+   =====================================================================
+
+   V64 keeps V63's click-only behavior but makes the expanded state fit the
+   actual Steam carousel geometry. The Community module grows modestly while
+   the review body receives a comfortable capped scroll pane. No scroll-time
+   page work, feed scans, or observers are added.
+   ===================================================================== */
+html.uw25-home-active .uw64-review-excerpt-hidden {
+    display: none !important;
+}
+
+html.uw25-home-active .uw64-inline-review {
+    margin: 8px 0 8px !important;
+    padding: 12px 14px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 0 !important;
+    box-sizing: border-box !important;
+
+    background: rgba(8, 18, 29, 0.62) !important;
+    border-left: 3px solid #67c1f5 !important;
+    border-radius: 2px !important;
+
+    color: #d6d7d8 !important;
+    white-space: normal !important;
+    overflow: hidden !important;
+}
+
+html.uw25-home-active .uw64-inline-review-text {
+    max-height: 330px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    overscroll-behavior: contain !important;
+    scrollbar-gutter: stable !important;
+
+    padding: 0 10px 2px 0 !important;
+    white-space: pre-wrap !important;
+    overflow-wrap: anywhere !important;
+    line-height: 1.52 !important;
+    font-size: inherit !important;
+    color: inherit !important;
+}
+
+html.uw25-home-active .uw64-inline-review-text::-webkit-scrollbar {
+    width: 10px !important;
+}
+
+html.uw25-home-active .uw64-inline-review-text::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.20) !important;
+}
+
+html.uw25-home-active .uw64-inline-review-text::-webkit-scrollbar-thumb {
+    background: rgba(103, 193, 245, 0.38) !important;
+    border-radius: 6px !important;
+}
+
+html.uw25-home-active .uw64-inline-review-text::-webkit-scrollbar-thumb:hover {
+    background: rgba(103, 193, 245, 0.58) !important;
+}
+
+/* Give the active review more breathing room without turning Community into
+   an enormous shelf. Steam normally keeps the app at ~435px and review_box at
+   ~278px; these overrides add roughly 150px while open. */
+html.uw25-home-active
+#module_community_recommendations.uw64-review-open
+.carousel_container.paging_capsules,
+html.uw25-home-active
+#module_community_recommendations.uw64-review-open
+.carousel_items.store_capsule_container {
+    min-height: 590px !important;
+    height: 590px !important;
+    overflow-y: visible !important;
+}
+
+html.uw25-home-active
+#module_community_recommendations.uw64-review-open
+.community_recommendation_app.uw64-review-open-card {
+    min-height: 590px !important;
+    height: 590px !important;
+    overflow: visible !important;
+    align-items: stretch !important;
+}
+
+html.uw25-home-active
+#module_community_recommendations.uw64-review-open
+.community_recommendation_app.uw64-review-open-card
+> .community_recommendation_capsule {
+    min-height: 590px !important;
+    height: 590px !important;
+    overflow: hidden !important;
+}
+
+html.uw25-home-active
+#module_community_recommendations.uw64-review-open
+.community_recommendation_app.uw64-review-open-card
+> .community_recommendation_capsule img,
+html.uw25-home-active
+#module_community_recommendations.uw64-review-open
+.community_recommendation_app.uw64-review-open-card
+> .community_recommendation_capsule video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+}
+
+html.uw25-home-active
+#module_community_recommendations.uw64-review-open
+.community_recommendation_app.uw64-review-open-card
+> .right_col {
+    min-height: 590px !important;
+    height: 590px !important;
+    overflow: visible !important;
+}
+
+html.uw25-home-active
+#module_community_recommendations.uw64-review-open
+.community_recommendations_block {
+    min-height: 430px !important;
+    height: 430px !important;
+    overflow: visible !important;
+}
+
+html.uw25-home-active
+#module_community_recommendations.uw64-review-open
+.review_box.uw64-review-open-box {
+    min-height: 420px !important;
+    height: 420px !important;
+    max-height: 420px !important;
+    overflow: visible !important;
+}
+
+html.uw25-home-active .uw64-inline-review-actions {
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin-top: 10px !important;
+}
+
+html.uw25-home-active .uw64-inline-review-collapse,
+html.uw25-home-active .uw64-inline-review-original {
+    appearance: none !important;
+    border: 0 !important;
+    border-radius: 2px !important;
+    padding: 7px 11px !important;
+    cursor: pointer !important;
+    font: inherit !important;
+    color: #d6d7d8 !important;
+    background: rgba(103, 193, 245, 0.18) !important;
+}
+
+html.uw25-home-active .uw64-inline-review-collapse:hover,
+html.uw25-home-active .uw64-inline-review-original:hover {
+    background: rgba(103, 193, 245, 0.30) !important;
+    color: #ffffff !important;
+}
+
+html.uw25-home-active .uw64-inline-review-loading {
+    color: #8f98a0 !important;
+    font-style: italic !important;
+}
+
+html.uw25-home-active .uw64-inline-review-error {
+    color: #c7d5e0 !important;
+}
+
+/* The inline panel already has a proper Collapse button. Hiding Steam's old
+   text trigger while expanded removes the duplicate "Collapse Review" line. */
+html.uw25-home-active .uw64-review-trigger-expanded {
+    display: none !important;
+}
+
+html.uw25-home-active .uw64-bb-heading {
+    display: block !important;
+    margin: 9px 0 4px !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    line-height: 1.25 !important;
+}
+
+html.uw25-home-active .uw64-bb-h1 { font-size: 1.20em !important; }
+html.uw25-home-active .uw64-bb-h2 { font-size: 1.12em !important; }
+html.uw25-home-active .uw64-bb-h3 { font-size: 1.06em !important; }
+
+html.uw25-home-active .uw64-bb-underline {
+    text-decoration: underline !important;
+}
+
+html.uw25-home-active .uw64-bb-quote {
+    margin: 8px 0 !important;
+    padding: 7px 10px !important;
+    border-left: 2px solid rgba(103, 193, 245, 0.50) !important;
+    background: rgba(0, 0, 0, 0.16) !important;
+    color: #c7d5e0 !important;
+}
+
+html.uw25-home-active .uw64-bb-code {
+    margin: 8px 0 !important;
+    padding: 8px 10px !important;
+    overflow-x: auto !important;
+    white-space: pre-wrap !important;
+    font-family: monospace !important;
+    background: rgba(0, 0, 0, 0.26) !important;
+}
+
+html.uw25-home-active .uw64-bb-spoiler {
+    background: rgba(255, 255, 255, 0.12) !important;
+    border-radius: 2px !important;
+    padding: 0 3px !important;
+}
+
+
+/* =====================================================================
+   V75 — COLD-START STATUS (PRESENTATION ONLY)
+   =====================================================================
+
+   On a cold Steam launch Valve can paint the Store navigation immediately
+   while the asynchronous homepage body remains an empty dark canvas for a few
+   seconds. UltraWide's V71 readiness gate correctly leaves that native DOM
+   alone, but a completely blank canvas can look like a broken theme.
+
+   home.js adds .uw-home-booting as soon as the theme script executes and
+   removes it the instant meaningful native Store content is detected. This
+   small, pointer-events-none status card therefore exists only during Valve's
+   own loading gap. It does not cover the page, intercept input, or change any
+   homepage layout/infinite-scroll behavior.
+   ===================================================================== */
+html.uw-home-booting:not(.uw-home-native-ready):not(:has(#uw-home-cold-start-notice)) body::before {
+    content: "Loading Steam Store…\A UltraWide is waiting for Steam to finish loading.";
+
+    position: fixed !important;
+    left: 50% !important;
+    top: 46vh !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 2147483000 !important;
+
+    display: block !important;
+    width: max-content !important;
+    max-width: min(560px, 72vw) !important;
+
+    padding: 16px 22px !important;
+    box-sizing: border-box !important;
+
+    color: #d6e5f2 !important;
+    background: rgba(20, 34, 48, 0.94) !important;
+    border: 1px solid rgba(103, 193, 245, 0.30) !important;
+    border-radius: 4px !important;
+
+    font: 500 15px/1.55 Arial, Helvetica, sans-serif !important;
+    text-align: center !important;
+    white-space: pre-line !important;
+
+    box-shadow: 0 10px 34px rgba(0, 0, 0, 0.38) !important;
+    pointer-events: none !important;
+}
