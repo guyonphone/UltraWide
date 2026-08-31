@@ -1,5 +1,9 @@
 # UltraWide
 
+> Got a 4K or ultrawide monitor? Tired of Steam using the middle third of it like the rest of your screen doesn’t exist? Me too.
+>
+> **UltraWide for Steam** makes the Store actually fit your display, with a three-column homepage, expanded game pages, better purchase placement, and a redesigned review section built for big screens.
+
 **UltraWide** is a Millennium theme for the Steam Store designed for ultrawide and very high-resolution displays.
 
 It expands Steam's Store layouts to make better use of horizontal space while preserving Steam's native functionality and keeping the main Store homepage and individual game pages isolated from one another.
