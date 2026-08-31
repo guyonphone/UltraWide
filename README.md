@@ -75,17 +75,14 @@ Some of these areas may be redesigned in future releases.
 
 UltraWide is specifically designed to make use of screen space that Steam's stock Store layout normally leaves unused.
 
-## Installation
-
-### Through SteamBrew / Millennium
-
-Once UltraWide is approved and listed, install it through Millennium's normal theme interface.
-
 ### Manual installation
 
-Clone or download this repository into your Millennium themes directory and enable **UltraWide** from Millennium's theme settings.
+Until UltraWide has been reviewed and approved for the Millennium theme browser, install it manually by placing the theme folder in your Steam Millennium themes directory.
 
-The repository already contains the browser-ready CSS and JavaScript used by the theme, so there is no build or transpilation step.
+The default Windows path is:
+
+```text
+C:\Program Files (x86)\Steam\millennium\themes\UltraWide
 
 ## Repository layout
 
