@@ -2,36 +2,78 @@
 
 Got a 4K or ultrawide monitor? Tired of Steam looking like it was made for a phone? Me too.
 
-**UltraWide for Steam** makes the Store actually fit your display, with a three-column homepage, expanded game pages, better purchase placement, and a redesigned review section built for big screens.
+**UltraWide for Steam** is a Millennium theme that makes better use of all that extra screen space without trying to turn Steam into something completely different.
 
-**UltraWide** is a Millennium theme for the Steam Store designed for ultrawide and very high-resolution displays.
-
-It expands Steam's Store layouts to make better use of horizontal space while preserving Steam's native functionality and keeping the main Store homepage and individual game pages isolated from one another.
+The current goal is pretty simple: keep the familiar Steam look and feel, but update the Store so it actually makes sense on ultrawide and very high-resolution displays.
 
 ![UltraWide Store homepage](assets/screenshots/homepage.png)
+
+## What UltraWide changes
+
+UltraWide currently focuses mainly on the two parts of Steam where the stock layout feels the most cramped on a large monitor:
+
+- the main Steam Store homepage
+- individual game Store pages
+
+The Steam Library already scales pretty well on ultrawide monitors, so I have intentionally left that alone.
+
+The theme also does not currently redesign every Steam sub-page. Steam has a lot of category, discovery, community, and miscellaneous Store pages, and many of those will still use the default Steam layout.
+
+I may expand support for some of those pages in future versions.
 
 ## Features
 
 - Three-lane Steam Store homepage designed for ultrawide displays.
 - Expanded individual game Store pages.
-- Purchase information is consistently routed to the right-hand column.
-- Large in-page Customer Reviews viewport with its own scrollbar.
-- Review summary and filter controls remain visible while reviews scroll.
-- Review viewport leaves left/right mouse gutters for normal page scrolling.
-- Scroll chaining returns to the Steam page when the review viewport reaches its top or bottom.
-- **See More Reviews** loads additional reviews inside the page instead of immediately navigating away.
-- Steam's full review page remains available through **Open Full Reviews**.
-- Steam's review histogram remains interactive and supports hide/show toggling.
-- Cold-start handling avoids activating the custom layout before Steam has mounted meaningful Store content.
-- Main Store homepage behavior and individual-game behavior are separately scoped.
+- Purchase information is consistently placed in the right-hand column.
+- Large in-page Customer Reviews section with its own scrollbar.
+- Review summary and filter controls stay visible while reviews scroll.
+- Left and right mouse gutters remain available for normal page scrolling.
+- Scroll chaining returns to the Steam page when the review section reaches the top or bottom.
+- **See More Reviews** loads additional reviews directly inside the page.
+- Steam's normal full review page is still available through **Open Full Reviews**.
+- Steam's review histogram stays native, interactive, and supports hide/show toggling.
+- Cold-start handling avoids activating the custom layout before Steam has finished loading meaningful Store content.
+- Homepage behavior and individual game-page behavior are separately scoped so they do not interfere with each other.
 
 ![UltraWide individual game page](assets/screenshots/app-page.png)
+
+## Design philosophy
+
+The focus of UltraWide is not to completely reskin Steam.
+
+The goal is to keep the default Steam aesthetic while making the Store layout feel more appropriate for modern ultrawide and high-resolution monitors.
+
+I have tried to keep Steam's native functionality intact wherever possible rather than replacing it with custom versions of existing controls.
+
+UltraWide has also been built with the Millennium community guidelines in mind. The theme uses local CSS and JavaScript, does not collect user data, and does not load third-party scripts or styles.
+
+The theme should also remain compatible with Steam's default color changer, since the design is intended to work with Steam rather than override its entire visual identity.
+
+## What is not redesigned yet
+
+UltraWide is currently focused on the main Store experience.
+
+Some Steam pages will still look completely default, including:
+
+- many Store category and discovery pages
+- some special Store sub-pages
+- Steam Community pages
+- other less commonly used Steam web views
+
+That is intentional for now.
+
+Steam has a large number of different page layouts, and I would rather expand support carefully than apply broad styling that breaks pages I have not tested.
+
+Some of these areas may be redesigned in future releases.
 
 ## Requirements
 
 - [Millennium](https://steambrew.app/)
 - Steam desktop client
-- A wide display is strongly recommended. UltraWide is specifically designed to make use of screen space that Steam's stock Store layout normally leaves unused.
+- A wide display is strongly recommended
+
+UltraWide is specifically designed to make use of screen space that Steam's stock Store layout normally leaves unused.
 
 ## Installation
 
@@ -39,11 +81,11 @@ It expands Steam's Store layouts to make better use of horizontal space while pr
 
 Once UltraWide is approved and listed, install it through Millennium's normal theme interface.
 
-### Manual development installation
+### Manual installation
 
-Clone or download this repository into your Millennium themes directory, then enable **UltraWide** from Millennium's theme settings.
+Clone or download this repository into your Millennium themes directory and enable **UltraWide** from Millennium's theme settings.
 
-The repository contains the browser-ready CSS and JavaScript used by the theme; no build or transpilation step is required.
+The repository already contains the browser-ready CSS and JavaScript used by the theme, so there is no build or transpilation step.
 
 ## Repository layout
 
@@ -59,35 +101,3 @@ UltraWide/
 ├── LICENSE
 └── assets/
     └── screenshots/
-```
-
-## Millennium compatibility and design notes
-
-UltraWide uses custom Millennium `Patches` rather than `UseDefaultPatches`. The homepage patch is limited to the Steam Store root, while the app-page patch is limited to numeric `/app/<id>` Store URLs.
-
-The theme is written in vanilla CSS and JavaScript. It does not load third-party JavaScript or CSS, does not implement telemetry or analytics, and does not collect user data.
-
-Where Steam exposes stable structural or semantic hooks, UltraWide prefers those over visible English text. A small number of legacy homepage discovery fallbacks may still inspect headings where Steam does not expose a stable identifier; those paths are isolated and documented in the source.
-
-The individual-game review implementation intentionally leaves Steam in control of its React-owned review cards, graph DOM, hover interactions, filter controls, and native full-review destination. UltraWide manages layout, scrolling, paint order, and additional same-origin Steam review batches around those native elements.
-
-## Current release
-
-**81.0.0**
-
-The v81 release fixes review-histogram paint ordering after a hide/show toggle. Steam's graph remains native and interactive; UltraWide ensures it paints above the pinned-header backing plate and below the pinned controls.
-
-See [CHANGELOG.md](CHANGELOG.md) for recent development history.
-
-## Contributing / bug reports
-
-If you encounter a Steam layout that does not behave correctly, please open a GitHub issue and include:
-
-- the Steam Store URL,
-- a screenshot or short recording,
-- your display resolution,
-- and, when possible, relevant DevTools console/DOM information.
-
-## License
-
-UltraWide is released under the [MIT License](LICENSE).
