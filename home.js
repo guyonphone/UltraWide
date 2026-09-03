@@ -170,6 +170,7 @@
     let fitRAF = 0;
     let dirtyFitRAF = 0;
     let reflowRAF = 0;
+    let uw82ScrollRAF = 0;
     let lastScanAt = 0;
     let lastDeepSweepAt = 0;
     let observer = null;
@@ -7810,6 +7811,70 @@
       Steam's long recommendation feed is progressively revealed/appended
       as the user scrolls. Sweep around the viewport as we move down-page.
     */
+    function uw82HandleScrollFrame() {
+        uw82ScrollRAF = 0;
+
+        /*
+          V52 PERFORMANCE: scrolling must stay cheap. V51 scheduled three
+          different geometry/layout jobs on virtually every scroll frame.
+          Deep sweep is now throttled internally, Calendar tail rescue is a
+          no-op once captured, and aggregate-host rescue is driven by deep
+          module resize/new-content events instead of raw scroll activity.
+        */
+        uw46ScheduleTailRescue();
+
+        /*
+          V82 PERFORMANCE: reading scrollHeight forces Chromium to flush any
+          pending layout first. During infinite scroll, layout is dirty
+          almost constantly because Steam keeps appending feed cards, so
+          doing this read on every raw scroll event (which can fire far more
+          often than once per frame) was forcing extra synchronous layout
+          work on top of the growing masonry grid. Coalescing the whole
+          calculation into a single requestAnimationFrame callback caps this
+          at once per painted frame, same as every other job in this file.
+        */
+        const remaining =
+            document.documentElement
+                .scrollHeight -
+            (
+                window.scrollY +
+                window.innerHeight
+            );
+
+        if (
+            remaining <
+            window.innerHeight * 2.25
+        ) {
+            const nativeFeed =
+                document.querySelector(".uw56-native-feed-stage");
+
+            /*
+              Once the native feed exists Steam owns infinite loading and
+              CSS Grid owns placement. Scrolling must not wake the generic
+              deep-DOM scanner anymore.
+            */
+            if (nativeFeed) {
+                /*
+                  V57: scrolling itself performs zero feed/footer geometry
+                  work. New Steam batches and window resize already update
+                  the footer. This keeps the hot scroll path read/write free.
+                */
+                return;
+            }
+
+            const now = performance.now();
+
+            if (now - uw53LastFallbackSweepAt > 1800) {
+                uw53LastFallbackSweepAt = now;
+                scheduleDeepSweep();
+
+                if (!uw53TopLayoutReady()) {
+                    scheduleScan();
+                }
+            }
+        }
+    }
+
     window.addEventListener(
         "scroll",
         () => {
@@ -7817,55 +7882,12 @@
                 return;
             }
 
-            /*
-              V52 PERFORMANCE: scrolling must stay cheap. V51 scheduled three
-              different geometry/layout jobs on virtually every scroll frame.
-              Deep sweep is now throttled internally, Calendar tail rescue is a
-              no-op once captured, and aggregate-host rescue is driven by deep
-              module resize/new-content events instead of raw scroll activity.
-            */
-            uw46ScheduleTailRescue();
-
-            const remaining =
-                document.documentElement
-                    .scrollHeight -
-                (
-                    window.scrollY +
-                    window.innerHeight
-                );
-
-            if (
-                remaining <
-                window.innerHeight * 2.25
-            ) {
-                const nativeFeed =
-                    document.querySelector(".uw56-native-feed-stage");
-
-                /*
-                  Once the native feed exists Steam owns infinite loading and
-                  CSS Grid owns placement. Scrolling must not wake the generic
-                  deep-DOM scanner anymore.
-                */
-                if (nativeFeed) {
-                    /*
-                      V57: scrolling itself performs zero feed/footer geometry
-                      work. New Steam batches and window resize already update
-                      the footer. This keeps the hot scroll path read/write free.
-                    */
-                    return;
-                }
-
-                const now = performance.now();
-
-                if (now - uw53LastFallbackSweepAt > 1800) {
-                    uw53LastFallbackSweepAt = now;
-                    scheduleDeepSweep();
-
-                    if (!uw53TopLayoutReady()) {
-                        scheduleScan();
-                    }
-                }
+            if (uw82ScrollRAF) {
+                return;
             }
+
+            uw82ScrollRAF =
+                requestAnimationFrame(uw82HandleScrollFrame);
         },
         { passive: true }
     );

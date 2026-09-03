@@ -21,8 +21,55 @@
    ===================================================================== */
 
 html.uw25-home-active {
-    --uw25-home-width: min(96vw, 7200px);
+    /*
+       V83: preserve the density of the approximately 5000px-wide Steam
+       window this homepage was designed around.  The inner page occupied
+       96% of that window (about 4800px), so maximizing the client on a
+       7680px display must add equal side gutters instead of stretching the
+       lanes and their internal spacing.
+    */
+    --uw25-home-width: min(96vw, 4800px);
     --uw25-gap: 18px;
+}
+
+/*
+   V83 - CENTERED SCROLLING PAGE CANVAS
+
+   Keep the scrolling homepage—not Steam's global header or footer—on the
+   same centered canvas as the waterfall and infinite feed.  Full-page
+   background/gradient layers are deliberately left untouched so the side
+   gutters still look native rather than becoming bare black bars.
+*/
+html.uw25-home-active .home_page_body_ctn > .main_content_ctn,
+html.uw25-home-active .home_page_body_ctn > .home_page_takeover_link {
+    width: var(--uw25-home-width) !important;
+    max-width: var(--uw25-home-width) !important;
+    min-width: 0 !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
+}
+
+/* The takeover video and fallback artwork are absolutely positioned. */
+html.uw25-home-active .home_page_body_ctn > #takeover_videos {
+    width: var(--uw25-home-width) !important;
+    max-width: var(--uw25-home-width) !important;
+    min-width: 0 !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    box-sizing: border-box !important;
+}
+
+html.uw25-home-active
+.home_page_body_ctn > .static_takeover_ctn > .page_background_holder {
+    width: var(--uw25-home-width) !important;
+    max-width: var(--uw25-home-width) !important;
+    min-width: 0 !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    box-sizing: border-box !important;
 }
 
 html.uw25-home-active #uw25-home-waterfall {
@@ -1251,6 +1298,24 @@ html.uw25-home-active .uw56-native-feed-stage #content_more.uw57-native-feed-gri
     align-self: start !important;
     height: auto !important;
     min-height: 0 !important;
+
+    /*
+       PERF: the homepage feed is an infinite-scroll grid that keeps growing
+       as Steam appends batches. Without this, the browser re-does layout,
+       style, and paint work for every card ever appended on every relayout,
+       even ones scrolled far off-screen, which is why scrolling gets slower
+       the longer a session runs.
+
+       content-visibility: auto skips layout/paint for cards outside the
+       viewport (plus a small buffer) and only "unskips" one when it is
+       about to become visible or when JS explicitly measures it (the
+       masonry code below only measures cards it has flagged dirty, so this
+       does not fight with that logic). contain-intrinsic-size is just a
+       placeholder box size used before a card has ever been measured, to
+       avoid a layout jump; it does not need to be exact.
+    */
+    content-visibility: auto;
+    contain-intrinsic-size: 0 400px;
 }
 
 /*
@@ -1584,4 +1649,78 @@ html.uw-home-booting:not(.uw-home-native-ready):not(:has(#uw-home-cold-start-not
 
     box-shadow: 0 10px 34px rgba(0, 0, 0, 0.38) !important;
     pointer-events: none !important;
+}
+
+/* =====================================================================
+   V82 — MILLENNIUM / STEAM SYSTEM ACCENT COLOR COMPATIBILITY
+   =====================================================================
+
+   Color-only compatibility layer. The V81 homepage layout and JavaScript are
+   intentionally untouched.
+
+   Millennium/Steam can expose the Windows/System accent palette through the
+   --SystemAccentColor family of CSS variables. UltraWide now consumes those
+   variables for the blue UI accents it owns while retaining V81's Steam-blue
+   values as fallbacks when the variables are unavailable.
+
+   Structural dark surfaces and semantic colors are intentionally left alone:
+   this keeps UltraWide looking like Steam rather than turning the entire Store
+   into a flat recolor.
+   ===================================================================== */
+html.uw25-home-active {
+    --uw-system-accent: var(--SystemAccentColor, #67c1f5);
+    --uw-system-accent-light: var(--SystemAccentColorLight1, var(--SystemAccentColor, #67c1f5));
+    --uw-system-accent-dark: var(--SystemAccentColorDark1, #2d73a5);
+
+    --uw-system-accent-12: color-mix(in srgb, var(--uw-system-accent) 12%, transparent);
+    --uw-system-accent-18: color-mix(in srgb, var(--uw-system-accent) 18%, transparent);
+    --uw-system-accent-30: color-mix(in srgb, var(--uw-system-accent-light) 30%, transparent);
+    --uw-system-accent-38: color-mix(in srgb, var(--uw-system-accent) 38%, transparent);
+    --uw-system-accent-50: color-mix(in srgb, var(--uw-system-accent) 50%, transparent);
+    --uw-system-accent-58: color-mix(in srgb, var(--uw-system-accent-light) 58%, transparent);
+}
+
+/* Shelf borders: subtle accent tint only; dark Steam surfaces remain native. */
+html.uw25-home-active
+#uw25-lane-left
+> .uw27-module-slot.uw31-left-shelf {
+    border-color: var(--uw-system-accent-12) !important;
+}
+
+html.uw25-home-active
+.uw32-genre-module {
+    border-color: var(--uw-system-accent-12) !important;
+}
+
+/* Community review reader accent line + scrollbar. */
+html.uw25-home-active .uw64-inline-review {
+    border-left-color: var(--uw-system-accent) !important;
+}
+
+html.uw25-home-active .uw64-inline-review-text::-webkit-scrollbar-thumb {
+    background: var(--uw-system-accent-38) !important;
+}
+
+html.uw25-home-active .uw64-inline-review-text::-webkit-scrollbar-thumb:hover {
+    background: var(--uw-system-accent-58) !important;
+}
+
+/* Reader controls follow the active system accent without changing geometry. */
+html.uw25-home-active .uw64-inline-review-collapse,
+html.uw25-home-active .uw64-inline-review-original {
+    background: var(--uw-system-accent-18) !important;
+}
+
+html.uw25-home-active .uw64-inline-review-collapse:hover,
+html.uw25-home-active .uw64-inline-review-original:hover {
+    background: var(--uw-system-accent-30) !important;
+}
+
+html.uw25-home-active .uw64-bb-quote {
+    border-left-color: var(--uw-system-accent-50) !important;
+}
+
+/* Cold-start notice keeps its dark Steam surface but follows the accent edge. */
+html.uw-home-booting:not(.uw-home-native-ready):not(:has(#uw-home-cold-start-notice)) body::before {
+    border-color: color-mix(in srgb, var(--SystemAccentColor, #67c1f5) 30%, transparent) !important;
 }

@@ -1311,3 +1311,53 @@ html.uw9-active #uw-open-full-reviews:hover {
 html.uw9-active #uw-open-full-reviews[hidden] {
     display: none !important;
 }
+
+/* =====================================================================
+   V82 — MILLENNIUM / STEAM SYSTEM ACCENT COLOR COMPATIBILITY
+   =====================================================================
+
+   Color-only compatibility layer. All V81 app-page layout, review lifecycle,
+   React-safety workarounds, graph paint-order handling, and JavaScript remain
+   unchanged.
+
+   Only UltraWide-owned blue accents inherit the --SystemAccentColor palette.
+   Steam's green action color, negative-review color, text colors, and dark
+   surfaces remain semantic/default so the page still reads like Steam.
+   ===================================================================== */
+html.uw9-active {
+    --uw-system-accent: var(--SystemAccentColor, #66c0f4);
+    --uw-system-accent-light: var(--SystemAccentColorLight1, var(--SystemAccentColor, #66c0f4));
+    --uw-system-accent-dark: var(--SystemAccentColorDark1, #2d73a5);
+
+    --uw-system-accent-24: color-mix(in srgb, var(--uw-system-accent) 24%, transparent);
+    --uw-system-accent-55: color-mix(in srgb, var(--uw-system-accent) 55%, transparent);
+    --uw-system-accent-78: color-mix(in srgb, var(--uw-system-accent-light) 78%, transparent);
+}
+
+/* Review viewport scrollbar follows the selected system accent. */
+html.uw9-active #uw-review-viewport::-webkit-scrollbar-thumb {
+    background: var(--uw-system-accent-55) !important;
+}
+
+html.uw9-active #uw-review-viewport::-webkit-scrollbar-thumb:hover {
+    background: var(--uw-system-accent-78) !important;
+}
+
+/* Additional review cards receive a restrained accent-tinted edge. */
+html.uw9-active .uw-extra-review-card {
+    border-color: var(--uw-system-accent-24) !important;
+}
+
+/* Positive verdict blue follows the accent; negative remains semantic red. */
+html.uw9-active .uw-review-verdict.positive {
+    color: var(--uw-system-accent-light) !important;
+}
+
+/* Full-review hover is an accent action. Default/resting button stays Steam-dark. */
+html.uw9-active #uw-open-full-reviews:hover {
+    background: linear-gradient(
+        to right,
+        var(--uw-system-accent-light) 5%,
+        var(--uw-system-accent-dark) 95%
+    ) !important;
+}
